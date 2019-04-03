@@ -1,4 +1,4 @@
-# lucky-number
+# Lucky Number
 
 ## Project setup
 ```
