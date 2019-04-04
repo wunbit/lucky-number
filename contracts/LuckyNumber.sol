@@ -2,16 +2,22 @@
 pragma solidity ^0.5.7;
 
 // Contracts
-contract Owned {
+contract Ownable {
   address payable owner;
 
   constructor() public {
     // Sets the owner of Contract
     owner = msg.sender;
   }
+
+  // Access modifier
+  modifier Owned {
+    require (msg.sender == owner);
+    _;
+  }
 }
 
-contract Mortal is Owned {
+contract Mortal is Ownable {
   // Our access modifier is present, only the contract creator can use this function
   function kill() public {
   if (msg.sender == owner) selfdestruct(owner);
@@ -50,21 +56,9 @@ contract LuckyNumber is Mortal {
       emit Won(false, 0);
     }
   }
-}
 
-
-// Imports
-
-// Contract variables
-
-
-// Events
-
-
-// Modifiers
-
-
-// External functions
-
-
-// Internal functions
+  // Owner can check balance of contract
+  function checkContractBalance() Owned public view returns (uint) {
+    return address(this).balance;
+  }
+ }
